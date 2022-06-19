@@ -5,47 +5,12 @@ const ChatResponses = {
 
 
 function run() {
-	var loading = generateLoading();
-	console.log(loading);
 	var text = getTextById('text')
+	if (text == "") { return }
 	writeInChat(ChatResponses.user, text)
-	writeInChat(ChatResponses.boot, loading)
+	writeInChat(ChatResponses.boot, generateLoading())
 	jannetTalk()
 	clearId('text')
-}
-
-
-function jannetTalkMook() {
-	var response2 = JSON.parse('[["name", "Rowling, J. K. 1965-"], ["title", "Harry Potter y el prisionero de Azkaban"], ["link", {"href": "http://worldcat.org/oclc/912488850"}], ["recordIdentifier", "912488850"], ["name", "Rowling, J. K. 1965-"], ["title", "Harry Potter y la piedra filosofal"], ["link", {"href": "http://worldcat.org/oclc/1026350000"}], ["recordIdentifier", "1026350000"], ["name", "Rowling, J. K. 1965-"], ["title", "Harry Potter y la cámara secreta"], ["link", {"href": "http://worldcat.org/oclc/868797710"}], ["recordIdentifier", "868797710"], ["name", "Rowling, J. K. 1965-"], ["title", "Harry Potter y la piedra filosofal"], ["link", {"href": "http://worldcat.org/oclc/431976716"}], ["recordIdentifier", "431976716"], ["name", "Thorne, Jack, 1978-"], ["title", "Harry Potter y el legado maldito."], ["link", {"href": "http://worldcat.org/oclc/962505756"}], ["recordIdentifier", "962505756"], ["name", "Rowling, J. K. 1965-"], ["title", "Harry Potter y la Orden del Fénix"], ["link", {"href": "http://worldcat.org/oclc/434364109"}], ["recordIdentifier", "434364109"], ["name", "Rowling, J. K. 1965-"], ["title", "Harry Potter y las reliquias de la muerte"], ["link", {"href": "http://worldcat.org/oclc/433374664"}], ["recordIdentifier", "433374664"], ["name", "Bassham, Gregory, ed. lit."], ["title", "Harry Potter y la filosofía : Hogwarts para Muggles"], ["link", {"href": "http://worldcat.org/oclc/978358669"}], ["recordIdentifier", "978358669"], ["name", "Bonifatti, Karina, 1967-"], ["title", "Las voces de los clásicos en Harry Potter"], ["link", {"href": "http://worldcat.org/oclc/892857206"}], ["recordIdentifier", "892857206"], ["name", "Regazzoni, Simone."], ["title", "Harry Potter : la filosofía : fenomenología de un mito pop"], ["link", {"href": "http://worldcat.org/oclc/1025687302"}], ["recordIdentifier", "1025687302"]]')
-
-	var a = 0;
-	var b = 0;
-	var array = [];
-	
-	while (a < response2.length) {
-		var responseHeader = response2[a][0]
-
-		switch (responseHeader) {
-			case "name":
-				array[b] = {};
-				array[b]["name"] = response2[a][1]
-			break;
-			case "title":
-				array[b]["title"] = response2[a][1]
-			break;
-			case "link":
-				array[b]["link"] = response2[a][1]
-			break;
-			case "recordIdentifier":
-				array[b]["recordIdentifier"] = response2[a][1]
-				b++;
-			break;
-		}	
-		a++;
-	}
-	// deleteLoagind();
-	writeInChat(ChatResponses.boot, generateCarrusel(array))
-	console.log(array);
 }
 
 function jannetTalk() {
@@ -59,6 +24,11 @@ function jannetTalk() {
 	     deleteLoagind();
 	     var response = JSON.parse(this.responseText);
 	     
+	     if (response.length == 0) {
+	     	writeInChat(ChatResponses.boot, "ERROR: Response is Empty", true)
+	     	return;
+	     }
+	     
 	     var textResponse = response[0]['text']
 
 	     console.log(textResponse);
@@ -68,8 +38,10 @@ function jannetTalk() {
 			var carruselRaw = JSON.parse(textResponse.replaceAll('\'', '\"'));
 	     	var carrusel = clearXML(carruselRaw);
 	     	writeInChat(ChatResponses.boot, generateCarrusel(carrusel))
-	     } else {
+	     } else if (textResponse != "") {
 			writeInChat(ChatResponses.boot, textResponse.replaceAll(' - ', '<br>- '))
+	     } else {
+	     	writeInChat(ChatResponses.boot, "ERROR: Response is Empty")
 	     }
 
 	     $('#rawChat').scrollTop($('#rawChat').height()*10);
@@ -114,7 +86,7 @@ function clearXML(response) {
 	return array;
 }
 
-function writeInChat(whoResponse, response) {
+function writeInChat(whoResponse, response, ERROR = false) {
 	var alertPlaceholder = document.getElementById("rawChat")
-	alertPlaceholder.append(generateParraf(whoResponse, response))
+	alertPlaceholder.append(generateParraf(whoResponse, response, ERROR))
 }

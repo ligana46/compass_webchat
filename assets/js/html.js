@@ -1,4 +1,4 @@
-function generateParraf(whoResponse, response) {
+function generateParraf(whoResponse, response, ERROR) {
 	var div = document.createElement('div')
 	var wrapper = document.createElement('p')
 	div.append(wrapper)
@@ -14,6 +14,10 @@ function generateParraf(whoResponse, response) {
 			wrapper.className += " right";
 			div.className = "chat-right";
 		break;
+	}
+
+	if (ERROR) {
+		wrapper.className += ' error-message';
 	}
 
 	return div

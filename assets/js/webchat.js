@@ -5,9 +5,11 @@ const ChatResponses = {
 
 
 function run() {
-	console.log(Math.floor(Date.now() / 1000))
+	var loading = generateLoading();
+	console.log(loading);
 	var text = getTextById('text')
 	writeInChat(ChatResponses.user, text)
+	writeInChat(ChatResponses.boot, loading)
 	jannetTalk()
 	clearId('text')
 }
@@ -41,11 +43,7 @@ function jannetTalkMook() {
 		}	
 		a++;
 	}
-
-
-
-
-
+	// deleteLoagind();
 	writeInChat(ChatResponses.boot, generateCarrusel(array))
 	console.log(array);
 }
@@ -58,13 +56,12 @@ function jannetTalk() {
 	xhttp.onreadystatechange = function() {
 	   if (this.readyState == 4 && this.status == 200) {
 	     // Response
-	     
+	     deleteLoagind();
 	     var response = JSON.parse(this.responseText);
 	     
 	     var textResponse = response[0]['text']
 
 	     console.log(textResponse);
-
 
 
 	     if (textResponse.substring(0, 1) == "[") {
@@ -74,6 +71,7 @@ function jannetTalk() {
 	     } else {
 			writeInChat(ChatResponses.boot, textResponse.replaceAll(' - ', '<br>- '))
 	     }
+
 	     $('#rawChat').scrollTop($('#rawChat').height()*10);
 	   }
 	};

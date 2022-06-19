@@ -46,3 +46,14 @@ function generateCarrusel(array) {
 	carrusel += '</div></div></div>'
 	return carrusel;
 }
+
+function generateLoading() {
+	return '<div id="loading" class="spinner-border" role="status"><span class="sr-only"></span></div>'
+}
+
+function deleteLoagind() {
+	const element = document.getElementById('loading');
+
+	document.getElementById("loading").parentElement.parentElement.remove()
+	// element.remove();
+}

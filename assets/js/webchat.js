@@ -35,7 +35,9 @@ function jannetTalk() {
 
 
 	     if (textResponse.substring(0, 1) == "[") {
-			var carruselRaw = JSON.parse(textResponse.replaceAll('\'', '\"'));
+	     	console.log(textResponse); 
+	     	var carruselRaw = textResponse.replaceAll('\'s', 's');
+			carruselRaw = JSON.parse(carruselRaw.replaceAll('\'', '\"'));
 	     	var carrusel = clearXML(carruselRaw);
 	     	writeInChat(ChatResponses.boot, generateCarrusel(carrusel))
 	     } else if (textResponse != "") {

@@ -3,10 +3,16 @@ const myID = Math.floor(Date.now() / 1000)
 
 function toogleChat() {
 	var element = document.getElementById("chatContainer");
+	var close = document.getElementById("button-open-chat-close");
+	var open = document.getElementById("button-open-chat-open");
 	if (element.style.display == "none" || element.style.display == "") {
 		// element.style.display = "block";
+		close.style.display = "inline-block";
+		open.style.display = "none";
 		unfade(element)
 	} else {
+		close.style.display = "none"
+		open.style.display = "inline-block";
 		fade(element)
 		// element.style.display = "none";
 	}

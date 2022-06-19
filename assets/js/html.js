@@ -1,7 +1,13 @@
 function generateParraf(whoResponse, response, ERROR) {
 	var div = document.createElement('div')
 	var wrapper = document.createElement('p')
+	var parrDate = document.createElement('p')
+
+	var currentdate = new Date(); 
+	var datetime = currentdate.getHours() + ":" + (currentdate.getMinutes()<10?'0':'') + currentdate.getMinutes();
+    parrDate.innerHTML = datetime;
 	div.append(wrapper)
+	div.append(parrDate)
 	wrapper.className = " chatConver"; //@TODO: Cambiar esto
 	wrapper.innerHTML = response;
 
@@ -9,16 +15,20 @@ function generateParraf(whoResponse, response, ERROR) {
 		case ChatResponses.boot:
 			wrapper.className += " left";
 			div.className = "chat-left";
+			parrDate.className = "message-date-boot";
 		break;
 		case ChatResponses.user:
 			wrapper.className += " right";
 			div.className = "chat-right";
+			parrDate.className = "message-date-user";
 		break;
 	}
 
 	if (ERROR) {
 		wrapper.className += ' error-message';
 	}
+
+
 
 	return div
 }

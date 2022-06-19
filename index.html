@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+
+	<title></title>
+
+	<style type="text/css">
+		.left {
+			float: left;
+			text-align: left;
+			background-color: #f4f7f9;
+			color: black;
+		}
+
+		.right {
+			float: right;
+			color: #fff;
+			text-align: right;
+		    margin-left: auto;
+		    overflow-wrap: break-word;
+		    background-color: rgb(101, 0, 255);
+		}
+
+		.chatConver {
+		    border-radius: 15px;
+		    padding: 11px 15px;
+		    font-family: Inter,sans-serif;
+		}
+
+		.chat-right {
+			width: 100%;
+			float: right;
+			text-align: right;
+			padding: 11px 15px;
+		}
+		.chat-left {
+			width: 100%;
+			float: left;
+			text-align: left;
+			padding: 11px 15px;	
+		}
+
+		#chat {
+			bottom: 0;
+    		display: flex;
+    		flex-direction: column;
+    		margin: 0 20px 20px 0;
+    		position: fixed;
+    		right: 0;
+    		z-index: 9999;
+    		align-items: flex-end;
+    		justify-content: flex-end;
+    		width: 370px;
+		    height: 679px;
+    		border: 1px solid #5c5c5c69;
+    		border-radius: 15px;
+    		box-shadow: 0px 0px 30px #5c5c5c69;
+		}
+
+		#chatHeader {
+			position: absolute;
+			top:0;
+			height: 60px;
+			border-radius: 15px 15px 0px 0px;
+			background-color: rgb(101, 0, 255);
+		}
+
+		#userChat {
+			background-color: #f4f7f9;
+		    height: 50px;
+		    border-radius: 0px 0px 15px 15px;
+		}
+
+		#userChat input {
+			border: 0px;
+			background-color: #f4f7f9;
+    		height: 100%;
+		}
+		#userChat button {
+			text-align: right;
+			color: rgb(101, 0, 255);
+			border: 0px;
+			background-color: #f4f7f9;
+		}
+		#rawChat {
+		    max-height: 568px;
+    		overflow-x: hidden;
+		}
+		.bd-example a {
+			color: white;
+			text-decoration: none;
+		}
+
+		/*scroll*/
+
+		.rawChat::-webkit-scrollbar {
+		    width: 10px;
+		}
+
+		.rawChat::-webkit-scrollbar-track {
+    background-color: darkgrey;
+}
+
+		.rawChat::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+	</style>
+</head>
+<body>
+	<!-- POPUPCHAT -->
+	<div class="container">
+		<div id ="chat" class="row">
+			<div id="chatHeader" class="col-12">
+				
+			</div>
+			<div id="rawChat" class="col-12">
+
+
+
+			</div>
+			<div id="userChat" class="col-12">
+				<input class="col-9" type="text" id="text" placeholder="Escribe aqui...">
+				<button class="col-2" onclick="run()">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+					  <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+					</svg>
+				</button>	
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+
+<script type="text/javascript" src="assets/js/init.js"></script>
+<script type="text/javascript" src="assets/js/webchat.js"></script>
+<script type="text/javascript" src="assets/js/html.js"></script>

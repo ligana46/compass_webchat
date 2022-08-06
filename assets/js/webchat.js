@@ -7,12 +7,13 @@ const JANNET_RESPONSE_TEXT = "plain_text";
 const JANNET_RESPONSE_CARRUSEL = "xml_text";
 const SERVER_TIME_OUT = 30000; // Lo estaba poniendo a 10 segundos pero el servidor tardaba mucho en contestar
 
-var timer, xhttp, questionsCollection = ['harry potter'], questionsCollectionCursor = questionsCollection.length;
+var timer, xhttp, questionsCollection = ['harry potter'], questionsCollectionCursor = questionsCollection.length, isTheLastMessage;
 
 
 function run() {
 	var text = getTextById('text')
 	if (text == "") { return }
+	isTheLastMessage = true;
 	writeInChat(ChatResponses.user, text)
 	writeInChat(ChatResponses.boot, generateLoading())
 	jannetTalk()
@@ -37,6 +38,8 @@ function jannetResponse(response) {
 
 function eachCard(response) {
 	for (var i = 0; i <= Object.keys(response[0].custom).length - 1; i++) {
+
+		if (i == Object.keys(response[0].custom).length - 1) { isTheLastMessage = true } else { isTheLastMessage = false}
 		let element = response[0].custom[i]
 		let text = element.text
 		switch (element.payload) {
@@ -82,40 +85,6 @@ function jannetTalk() {
 	timer = setTimeout(onTimeOut, SERVER_TIME_OUT);
 	xhttp.onreadystatechange = function() {
 		serverResponse(this)
-		/*
-	   if (this.readyState == 4 && this.status == 200) {
-	     // Response
-	     deleteLoagind();
-	     var response = JSON.parse(this.responseText);
-
-	     console.log(response);
-	     
-	     if (response.length == 0) {
-	     	writeInChat(ChatResponses.boot, "ERROR: Response is Empty", true)
-	     	return;
-	     }
-	     
-	     var textResponse = response[0]['text']
-
-	     console.log(textResponse);
-
-
-	     if (textResponse.substring(0, 1) == "[") {
-	     	console.log(textResponse); 
-	     	var carruselRaw = textResponse.replaceAll('\'s', 's');
-			carruselRaw = JSON.parse(carruselRaw.replaceAll('\'', '\"'));
-			console.log(carruselRaw)
-	     	var carrusel = clearXML(carruselRaw);
-	     	console.log(carrusel)
-	     	writeInChat(ChatResponses.boot, generateCarrusel(carrusel))
-	     } else if (textResponse != "") {
-			writeInChat(ChatResponses.boot, textResponse.replaceAll(' - ', '<br>- '))
-	     } else {
-	     	writeInChat(ChatResponses.boot, "ERROR: Response is Empty")
-	     }
-
-	     $('#rawChat').scrollTop($('#rawChat').height()*10);
-	   }*/
 	};
 
 	var question =  getTextById('text');

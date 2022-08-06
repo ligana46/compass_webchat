@@ -7,7 +7,7 @@ function generateParraf(whoResponse, response, ERROR) {
 	var datetime = currentdate.getHours() + ":" + (currentdate.getMinutes()<10?'0':'') + currentdate.getMinutes();
     parrDate.innerHTML = datetime;
 	div.append(wrapper)
-	div.append(parrDate)
+	if (isTheLastMessage) { div.append(parrDate) }
 	wrapper.className = " chatConver"; //@TODO: Cambiar esto
 	wrapper.innerHTML = response;
 

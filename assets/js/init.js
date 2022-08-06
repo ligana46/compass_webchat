@@ -47,7 +47,30 @@ function unfade(element) {
 
 
 document.addEventListener("keyup", function(event) {
-    if (event.keyCode === 13 && document.querySelector('#text') === document.activeElement) {
+    if (event.code === "Enter" && document.querySelector('#text') === document.activeElement) {
         run()
+    }
+
+    if (event.code === "ArrowDown" && document.querySelector('#text') === document.activeElement) {
+        questionsCollectionCursor += 1;
+        if (questionsCollectionCursor >= questionsCollection.length) {
+            questionsCollectionCursor = 0;
+        }
+
+        if ( questionsCollection[questionsCollectionCursor] != undefined) {
+            document.getElementById("text").value = questionsCollection[questionsCollectionCursor];
+        }
+        document.getElementById("text").value = questionsCollection[questionsCollectionCursor];
+    }
+
+    if (event.code === "ArrowUp" && document.querySelector('#text') === document.activeElement) {
+        questionsCollectionCursor -= 1;
+        if (questionsCollectionCursor <= -1) {
+            questionsCollectionCursor = questionsCollection.length-1;
+        }
+
+        if ( questionsCollection[questionsCollectionCursor] != undefined) {
+            document.getElementById("text").value = questionsCollection[questionsCollectionCursor];
+        }
     }
 });

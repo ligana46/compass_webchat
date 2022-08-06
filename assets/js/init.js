@@ -10,6 +10,7 @@ function toogleChat() {
 		close.style.display = "inline-block";
 		open.style.display = "none";
 		unfade(element)
+        document.getElementById("text").focus();
 	} else {
 		close.style.display = "none"
 		open.style.display = "inline-block";

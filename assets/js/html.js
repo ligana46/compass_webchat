@@ -42,7 +42,7 @@ function clearId(id) {
 }
 
 
-function generateCarrusel(array) {
+function generateCarrusel2(array) {
 	console.log(array)
 	// @TODO: ARREGLAR PROBLEMA DE PEDIR DOS 
 	var carrusel = '<div class="bd-example"><div id="carouselExampleCaptions' + array[0].recordIdentifier + '" class="carousel slide" data-interval="false" data-ride="carousel"><ol class="carousel-indicators"><li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li><li data-target="#carouselExampleCaptions" data-slide-to="1"></li><li data-target="#carouselExampleCaptions" data-slide-to="2"></li></ol><div class="carousel-inner">';
@@ -58,6 +58,52 @@ function generateCarrusel(array) {
 	carrusel += '<a class="carousel-control-prev" href="#carouselExampleCaptions' + array[0].recordIdentifier + '" role="button" data-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="sr-only"></span></a><a class="carousel-control-next" href="#carouselExampleCaptions' + array[0].recordIdentifier + '" role="button" data-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="sr-only"></span></a>'
 
 	carrusel += '</div></div></div>'
+	return carrusel;
+}
+
+
+function generateCarrusel(array) {
+	const idName = "accordion-" + Math.floor(Date.now() / 1000)
+	console.log(array)
+	var carrusel = '<div id="' + idName + '">';
+
+	for (var i = 0; i < array.length; i++) {
+
+
+		let item = array[i];
+		let name = item.name;
+		let recordIdentifier = item.recordIdentifier;
+		let isbn = "9788498381405"; // @TODO: CAMBIAR ESTO
+		let title = item.title;
+		let href = item.link.href
+
+		let imageURL = "https://covers.openlibrary.org/b/isbn/" + isbn + "-M.jpg";
+		carrusel += '';
+		carrusel += '\t\t\t\t\t\t\t<div class="card">\n' +
+			'\t\t\t\t\t\t\t\t<div class="card-header" id="headingOne">\n' +
+			'\t\t\t\t\t\t\t\t\t<h5 class="mb-0">\n' +
+			'\t\t\t\t\t\t\t\t\t\t<button class="btn btn-link" data-toggle="collapse" data-target="#collapse' + recordIdentifier + '" aria-expanded="true" aria-controls="collapse' + recordIdentifier + '">\n' +
+			'\t\t\t\t\t\t\t\t\t\t\t ' + title + '  \n' +
+			'\t\t\t\t\t\t\t\t\t\t</button>\n' +
+			'\t\t\t\t\t\t\t\t\t</h5>\n' +
+			'\t\t\t\t\t\t\t\t</div>\n' +
+			'\n' +
+			'\t\t\t\t\t\t\t\t<div id="collapse' + recordIdentifier + '" class="collapse" aria-labelledby="headingOne" data-parent="#' + idName + '">\n' +
+			'\t\t\t\t\t\t\t\t\t<div class="card-body" style="padding: 0rem 1rem;background: url(' + imageURL + ') no-repeat center #eee;">\n' +
+			'\t\t\t\t\t\t\t\t\t\t<div class="card-deck">\n' +
+			'\t\t\t\t\t\t\t\t\t\t\t<div class="card" style="background-color: rgb(255 255 255 / 85%);">\n' +
+			'\t\t\t\t\t\t\t\t\t\t\t\t<div class="card-body">\n' +
+			'\t\t\t\t\t\t\t\t\t\t\t\t\t<h5 class="card-title">' + name + '</h5>\n' +
+			'\t\t\t\t\t\t\t\t\t\t\t\t\t<p class="card-text"><small>OCLC ID : ' + recordIdentifier + '</small></p>\n' +
+			'\t\t\t\t\t\t\t\t\t\t\t\t\t<a target="_blank" href="' + href + '" class="card-text"><small class="text-muted">ver en catalogo</small></a>\n' +
+			'\t\t\t\t\t\t\t\t\t\t\t\t</div>\n' +
+			'\t\t\t\t\t\t\t\t\t\t\t</div>\n' +
+			'\t\t\t\t\t\t\t\t\t\t</div>\n' +
+			'\t\t\t\t\t\t\t\t\t</div>\n' +
+			'\t\t\t\t\t\t\t\t</div>\n' +
+			'\t\t\t\t\t\t\t</div>';
+	}
+	carrusel += "</div>";
 	return carrusel;
 }
 

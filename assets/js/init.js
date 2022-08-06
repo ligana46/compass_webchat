@@ -43,3 +43,10 @@ function unfade(element) {
         op += op * 0.1;
     }, 10);
 }
+
+
+document.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13 && document.querySelector('#text') === document.activeElement) {
+        run()
+    }
+});

@@ -4,10 +4,10 @@ const ChatResponses = {
 }
 
 const JANNET_RESPONSE_TEXT = "plain_text";
-const JANNET_RESPONSE_CARRUSEL = "";
-const SERVER_TIME_OUT = 30000;
+const JANNET_RESPONSE_CARRUSEL = "xml_text";
+const SERVER_TIME_OUT = 30000; // Lo estaba poniendo a 10 segundos pero el servidor tardaba mucho en contestar
 
-var timer, xhttp;
+var timer, xhttp, questionsCollection = ['harry potter'], questionsCollectionCursor = questionsCollection.length;
 
 
 function run() {
@@ -36,23 +36,31 @@ function jannetResponse(response) {
 }
 
 function eachCard(response) {
-	for (var i = 0; i <= response.length - 1; i++) {
-		let element = response[i].custom
+	for (var i = 0; i <= Object.keys(response[0].custom).length - 1; i++) {
+		let element = response[0].custom[i]
 		let text = element.text
-
-		switch (element.type) {
+		switch (element.payload) {
 			case JANNET_RESPONSE_TEXT:
 				simpleCard(text);
 				break;
 			case JANNET_RESPONSE_CARRUSEL:
 				carruselCard(text)
 				break;
+			default:
+				writeInChat(ChatResponses.boot, "ERROR: Respuesta sin categoria", error = true)
+				break;
 		}
 	}
 }
 
 function carruselCard(text) {
-
+	let textClean = text.replaceAll('\'', '\"')
+	textClean = textClean.replaceAll('\"{', '{')
+	textClean = textClean.replaceAll('\}"', '}')
+	var carrusel = JSON.parse(textClean)
+	console.log(carrusel);
+	carrusel = clearXML(carrusel);
+	writeInChat(ChatResponses.boot, generateCarrusel(carrusel))
 }
 
 function simpleCard(text) {
@@ -109,12 +117,18 @@ function jannetTalk() {
 	     $('#rawChat').scrollTop($('#rawChat').height()*10);
 	   }*/
 	};
+
+	var question =  getTextById('text');
 	var data = {
 		"sender" : myID,
-		"message" : getTextById('text')
+		"message" : question
 	};
 
-	console.log(getTextById('text'));
+
+
+	console.log(question);
+	questionsCollection.push(question)
+	questionsCollectionCursor = questionsCollection.length;
 	xhttp.send(JSON.stringify(data));
 }
 
@@ -122,27 +136,13 @@ function clearXML(response) {
 	var a = 0;
 	var b = 0;
 	var array = [];
-	
-	while (a < response.length) {
-		var responseHeader = response[a][0]
 
-		switch (responseHeader) {
-			case "name":
-				array[b] = {};
-				array[b]["name"] = response[a][1]
-			break;
-			case "title":
-				array[b]["title"] = response[a][1]
-			break;
-			case "link":
-				array[b]["link"] = response[a][1]
-			break;
-			case "recordIdentifier":
-				array[b]["recordIdentifier"] = response[a][1]
-				b++;
-			break;
-		}	
-		a++;
+
+	for (var i = 0; i <= response.length-1; i++) {
+		let item = response[i];
+		if (item.name) {
+			array.push(item)
+		}
 	}
 
 	return array;
@@ -151,4 +151,5 @@ function clearXML(response) {
 function writeInChat(whoResponse, response, ERROR = false) {
 	var alertPlaceholder = document.getElementById("rawChat")
 	alertPlaceholder.append(generateParraf(whoResponse, response, ERROR))
+	$('#rawChat').scrollTop($('#rawChat').height()*10);
 }

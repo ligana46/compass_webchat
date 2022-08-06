@@ -49,7 +49,7 @@ function generateCarrusel(array) {
 
 	for (var i = 0; i < array.length; i++) {
 		if (i == 0) {
-			carrusel += '<div class="carousel-item active"><img src="https://www.macmillandictionary.com/us/external/slideshow/full/Grey_full.png" class="d-block w-100" alt="..."><div class="carousel-caption d-none d-md-block"><a target="_blank" href="' + array[i].link.href + '"><h5>' + array[i]["title"] + '</h5></a></div></div>';
+			carrusel += '<div class="carousel-item active"><img src="https://www.macmillandictionary.com/us/external/slideshow/full/Grey_full.png" class="d-block w-100" alt="..."><div style="display: block!important;;" class="carousel-caption d-none d-md-block"><a target="_blank" href="' + array[i].link.href + '"><h5>' + array[i]["title"] + '</h5></a></div></div>';
 		} else {
 			carrusel += '<div class="carousel-item"><img src="https://www.macmillandictionary.com/us/external/slideshow/full/Grey_full.png" class="d-block w-100" alt="..."><div class="carousel-caption d-none d-md-block"><a target="_blank" href="' + array[i].link.href + '"><h5>' + array[i]["title"] + '</h5></a></div></div>';
 		}

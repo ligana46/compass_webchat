@@ -3,6 +3,9 @@ const ChatResponses = {
 	user: "right",
 }
 
+const JANNET_RESPONSE_TEXT = "plain_text";
+const JANNET_RESPONSE_CARRUSEL = "";
+
 
 function run() {
 	var text = getTextById('text')
@@ -13,16 +16,60 @@ function run() {
 	clearId('text')
 }
 
+function serverResponse(response) {
+	if (isServerUp(response)) {
+		deleteLoagind();
+		jannet	Response(JSON.parse(response.responseText))
+	}
+}
+
+function jannetResponse(response) {
+	if (!isResponseEmpty(response)) {
+		eachCard(response)
+	} else {
+		writeInChat(ChatResponses.boot, "ERROR: Response is Empty", true)
+	}
+}
+
+function eachCard(response) {
+	for (var i = 0; i <= response.length - 1; i++) {
+		let element = response[i].custom
+		let text = element.text
+
+		switch (element.type) {
+			case JANNET_RESPONSE_TEXT:
+				simpleCard(text);
+				break;
+			case JANNET_RESPONSE_CARRUSEL:
+				carruselCard(text)
+				break;
+		}
+	}
+}
+
+function carruselCard(text) {
+
+}
+
+function simpleCard(text) {
+	console.log(text);
+	writeInChat(ChatResponses.boot, text.replaceAll(' - ', '<br>- '))
+}
+
 function jannetTalk() {
 	$('#rawChat').scrollTop($('#rawChat').height()*10);
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("POST", "https://d599-139-47-72-239.eu.ngrok.io/webhooks/rest/webhook", true); 
+	xhttp.open("POST", "https://4b43-139-47-73-138.eu.ngrok.io/webhooks/rest/webhook", true); 
 	xhttp.setRequestHeader("Content-Type", "application/json");
 	xhttp.onreadystatechange = function() {
+		serverResponse(this)
+		/*
 	   if (this.readyState == 4 && this.status == 200) {
 	     // Response
 	     deleteLoagind();
 	     var response = JSON.parse(this.responseText);
+
+	     console.log(response);
 	     
 	     if (response.length == 0) {
 	     	writeInChat(ChatResponses.boot, "ERROR: Response is Empty", true)
@@ -49,7 +96,7 @@ function jannetTalk() {
 	     }
 
 	     $('#rawChat').scrollTop($('#rawChat').height()*10);
-	   }
+	   }*/
 	};
 	var data = {
 		"sender" : myID,

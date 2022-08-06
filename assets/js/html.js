@@ -67,7 +67,7 @@ function generateLoading() {
 
 function deleteLoagind() {
 	const element = document.getElementById('loading');
-
+	if (element == null) { return }
 	document.getElementById("loading").parentElement.parentElement.remove()
 	// element.remove();
 }

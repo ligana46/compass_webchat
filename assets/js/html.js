@@ -33,6 +33,16 @@ function generateParraf(whoResponse, response, ERROR) {
 	return div
 }
 
+function enableText() {
+	document.getElementById("text").readOnly = true;
+	document.getElementById("text").placeholder = "Esperando respuesta";
+}
+
+function disableText() {
+	document.getElementById("text").readOnly = false;
+	document.getElementById("text").placeholder = "Escribe aqui...";
+}
+
 function getTextById(id) {
 	return document.getElementById(id).value
 }

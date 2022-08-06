@@ -16,12 +16,14 @@ function run() {
 	isTheLastMessage = true;
 	writeInChat(ChatResponses.user, text)
 	writeInChat(ChatResponses.boot, generateLoading())
+	enableText();
 	jannetTalk()
 	clearId('text')
 }
 
 function serverResponse(response) {
 	if (isServerUp(response)) {
+		disableText()
 		clearTimeout(timer);
 		deleteLoagind();
 		jannetResponse(JSON.parse(response.responseText))
@@ -74,6 +76,7 @@ function simpleCard(text) {
 function onTimeOut() {
 	xhttp.abort();
 	deleteLoagind()
+	disableText()
 	writeInChat(ChatResponses.boot, "ERROR: Server is not responding...", error = true)
 }
 

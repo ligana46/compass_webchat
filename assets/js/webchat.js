@@ -5,6 +5,9 @@ const ChatResponses = {
 
 const JANNET_RESPONSE_TEXT = "plain_text";
 const JANNET_RESPONSE_CARRUSEL = "";
+const SERVER_TIME_OUT = 30000;
+
+var timer, xhttp;
 
 
 function run() {
@@ -18,6 +21,7 @@ function run() {
 
 function serverResponse(response) {
 	if (isServerUp(response)) {
+		clearTimeout(timer);
 		deleteLoagind();
 		jannetResponse(JSON.parse(response.responseText))
 	}
@@ -52,15 +56,22 @@ function carruselCard(text) {
 }
 
 function simpleCard(text) {
-	console.log(text);
-	writeInChat(ChatResponses.boot, text.replaceAll(' - ', '<br>- '))
+	// TODO: ESTO VA A DAR PROBLEMAS....
+	writeInChat(ChatResponses.boot, text.replaceAll('-', '<br>- '))
+}
+
+function onTimeOut() {
+	xhttp.abort();
+	deleteLoagind()
+	writeInChat(ChatResponses.boot, "ERROR: Server is not responding...", error = true)
 }
 
 function jannetTalk() {
 	$('#rawChat').scrollTop($('#rawChat').height()*10);
-	var xhttp = new XMLHttpRequest();
+	xhttp = new XMLHttpRequest();
 	xhttp.open("POST", "https://4b43-139-47-73-138.eu.ngrok.io/webhooks/rest/webhook", true); 
 	xhttp.setRequestHeader("Content-Type", "application/json");
+	timer = setTimeout(onTimeOut, SERVER_TIME_OUT);
 	xhttp.onreadystatechange = function() {
 		serverResponse(this)
 		/*

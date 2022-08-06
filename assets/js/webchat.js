@@ -19,7 +19,7 @@ function run() {
 function serverResponse(response) {
 	if (isServerUp(response)) {
 		deleteLoagind();
-		jannet	Response(JSON.parse(response.responseText))
+		jannetResponse(JSON.parse(response.responseText))
 	}
 }
 

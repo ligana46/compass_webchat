@@ -96,8 +96,6 @@ function jannetTalk() {
 		"message" : question
 	};
 
-
-
 	console.log(question);
 	questionsCollection.push(question)
 	questionsCollectionCursor = questionsCollection.length;

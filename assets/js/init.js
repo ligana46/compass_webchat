@@ -47,7 +47,8 @@ function unfade(element) {
 
 
 document.addEventListener("keyup", function(event) {
-    if (event.code === "Enter" && document.querySelector('#text') === document.activeElement) {
+    console.log(event.code)
+    if ((event.code === "Enter" || event.code === "NumpadEnter") && document.querySelector('#text') === document.activeElement) {
         run()
     }
 

@@ -13,24 +13,41 @@ class WebChatModel {
     getType(response) {
         for (var i = 0; i <= Object.keys(response[0].custom).length - 1; i++) {
 
-            // if (i == Object.keys(response[0].custom).length - 1) { isTheLastMessage = true } else { isTheLastMessage = false}
+            if (i == Object.keys(response[0].custom).length - 1) { controller.view.isTheLastMessage = true } else { controller.view.isTheLastMessage = false}
             let element = response[0].custom[i]
             let text = element.text
             switch (element.payload) {
                 case this.JANNET_RESPONSE_TEXT:
-                    // simpleCard(text);
-                    controller.responseSimpleCard(text)
+                    controller.bootWriteChat(text)
                     break;
                 case this.JANNET_RESPONSE_CARRUSEL:
-                    // carruselCard(text)
-                    console.log(this.JANNET_RESPONSE_CARRUSEL)
-                    console.log(text)
+                    controller.bootWriteChat(controller.generateCarrusel(this.carruselCard(text)))
                     break;
                 default:
-                    console.log("Error")
-                    // writeInChat(ChatResponses.boot, "ERROR: Respuesta sin categoria", error = true)
+                    controller.bootWriteChat("Respuesta sin categoria", true)
                     break;
             }
         }
+    }
+
+    carruselCard(text) {
+        let textClean = text.replaceAll('\'', '\"')
+        textClean = textClean.replaceAll('\"{', '{')
+        textClean = textClean.replaceAll('\}"', '}')
+        let carrusel = JSON.parse(textClean);
+        return this.clearXML(carrusel);
+    }
+
+    clearXML(response) {
+        var array = [];
+
+        for (var i = 0; i <= response.length-1; i++) {
+            let item = response[i];
+            if (item.name) {
+                array.push(item)
+            }
+        }
+
+        return array;
     }
 }

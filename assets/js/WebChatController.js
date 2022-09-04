@@ -9,7 +9,6 @@ class WebChatController {
 
     _initLocalListeners() {
         this.view.document.addEventListener(this.view.KEYUP, function(event) {
-            //
             if ((event.code === controller.view.INPUTPADENTER || event.code === controller.view.INPUTENTER) && controller.view.document.querySelector('#' + controller.view.ID_INPUTTEXT) === document.activeElement) {
                 // Send Message
                 controller.sendMessage()
@@ -19,15 +18,20 @@ class WebChatController {
         this.view.getElementById(this.view.ID_TOOGLE_CHAT).onclick = function () {
             controller.view.toggleWebChat()
         }
+
+        this.view.getElementById(this.view.ID_BUTTON_SEND).onclick = function () {
+            controller.sendMessage()
+        }
     }
 
     sendMessage() {
         let text = this.view.getElementById(this.view.ID_INPUTTEXT).value
         if (text == "") { return }
+        this.jannetTalk()
         this.view.writeInChat(this.view.chatResponses.user, text)
         this.view.writeInChat(this.view.chatResponses.boot, this.view.generateLoading())
         this.view.disableInputText()
-        this.jannetTalk()
+        this.view.clearInput()
     }
 
     jannetTalk() {
@@ -52,7 +56,8 @@ class WebChatController {
         xhttp.send(JSON.stringify(data));
     }
 
-    responseSimpleCard(text) {
+    bootWriteChat(text, error = false) {
+        this.view.deleteLoagind()
         this.view.enableInputText()
         this.view.writeInChat(this.view.chatResponses.boot, text.replaceAll('-', '<br>- '))
     }

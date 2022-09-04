@@ -8,8 +8,6 @@ class WebChatView {
         this.ID_RAW_CHAT = "rawChat"
         this.ID_BUTTON_SEND = "button_send";
 
-
-
         this.KEYUP = "keyup"
         this.INPUTARROWDOWN = "ArrowDown"
         this.INPUTENTER = "Enter"
@@ -19,21 +17,10 @@ class WebChatView {
         this.document = document
         this.MYID = Math.floor(Date.now() / 1000)
         this.isTheLastMessage = true
-
-
         this.chatResponses = {
             boot: "left",
             user: "right",
         }
-    }
-
-
-    sendMessage() {
-        console.log("Enciado")
-    }
-
-    printSimpleCard(text) {
-
     }
 
     toggleWebChat() {
@@ -75,7 +62,7 @@ class WebChatView {
 
         this.getElementById(this.ID_INPUTTEXT).focus()
 
-        let op = 0.1;  // initial opacity
+        let op = 1;  // initial opacity
         element.style.display = 'block';
         let timer = setInterval(function () {
             if (op >= 1){

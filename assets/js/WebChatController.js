@@ -2,6 +2,11 @@ class WebChatController {
     constructor(view, model) {
         this.view = view
         this.model = model
+        this.timer;
+        this.xhttp;
+        this.SERVER_TIME_OUT = 30000;
+        this.URL = "https://0f44-139-47-73-138.eu.ngrok.io"
+        this.END_POINT = "/webhooks/rest/webhook"
 
         this._initLocalListeners()
     }
@@ -34,13 +39,18 @@ class WebChatController {
         this.view.clearInput()
     }
 
+    onTimeOut() {
+        controller.xhttp.abort();
+        controller.bootWriteChat("ERROR: Server is not responding...", true)
+    }
+
     jannetTalk() {
         $('#rawChat').scrollTop($('#rawChat').height()*10);
-        let xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "https://0f44-139-47-73-138.eu.ngrok.io/webhooks/rest/webhook", true);
-        xhttp.setRequestHeader("Content-Type", "application/json");
-        // timer = setTimeout(onTimeOut, SERVER_TIME_OUT);
-        xhttp.onreadystatechange = function() {
+        this.xhttp = new XMLHttpRequest();
+        this.xhttp.open("POST", this.URL + this.END_POINT, true);
+        this.xhttp.setRequestHeader("Content-Type", "application/json");
+        this.timer = setTimeout(this.onTimeOut, this.SERVER_TIME_OUT);
+        this.xhttp.onreadystatechange = function() {
             controller.model.serverResponse(this)
         };
 
@@ -53,10 +63,11 @@ class WebChatController {
         // console.log(question);
         // questionsCollection.push(question)
         // questionsCollectionCursor = questionsCollection.length;
-        xhttp.send(JSON.stringify(data));
+        this.xhttp.send(JSON.stringify(data));
     }
 
     bootWriteChat(text, error = false) {
+        clearTimeout(this.timer);
         this.view.deleteLoagind()
         this.view.enableInputText()
         this.view.writeInChat(this.view.chatResponses.boot, text.replaceAll('-', '<br>- '))

@@ -1,0 +1,1 @@
+let controller = new WebChatController(new WebChatView(document), new WebChatModel())

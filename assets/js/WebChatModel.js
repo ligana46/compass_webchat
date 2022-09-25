@@ -5,12 +5,19 @@ class WebChatModel {
     }
 
     serverResponse(response) {
+        console.log(response)
         if (response.readyState === 4 && response.status === 200) {
+            console.log(response)
             this.getType(JSON.parse(response.responseText))
         }
     }
 
     getType(response) {
+        console.log(response)
+        if (response.length <= 0) {
+            controller.bootWriteChat("Ahora mismo no puedo atender tu consulta. Por favor, prueba en unos minutos", true)
+            return
+        }
         for (var i = 0; i <= Object.keys(response[0].custom).length - 1; i++) {
 
             if (i == Object.keys(response[0].custom).length - 1) { controller.view.isTheLastMessage = true } else { controller.view.isTheLastMessage = false}
@@ -18,13 +25,13 @@ class WebChatModel {
             let text = element.text
             switch (element.payload) {
                 case this.JANNET_RESPONSE_TEXT:
-                    controller.bootWriteChat(text)
+                    controller.bootWriteChat(this.clearText(text))
                     break;
                 case this.JANNET_RESPONSE_CARRUSEL:
-                    controller.bootWriteChat(controller.generateCarrusel(this.carruselCard(text)))
+                    controller.bootWriteChat(controller.view.generateCarrusel(this.carruselCard(text)))
                     break;
                 default:
-                    controller.bootWriteChat("Respuesta sin categoria", true)
+                    controller.bootWriteChat("Ahora mismo no puedo atender tu consulta. Por favor, prueba en unos minutos", true)
                     break;
             }
         }
@@ -34,6 +41,11 @@ class WebChatModel {
         let textClean = text.replaceAll('\'', '\"')
         textClean = textClean.replaceAll('\"{', '{')
         textClean = textClean.replaceAll('\}"', '}')
+        textClean = textClean.replaceAll('e\\\\u0301', '&#233')
+        textClean = textClean.replaceAll('i\\\\u0301', '&#237')
+        textClean = textClean.replaceAll('\\\\u00ed', '&#237')
+        textClean = textClean.replaceAll('o\\\\u0301', '&#243')
+        
         let carrusel = JSON.parse(textClean);
         return this.clearXML(carrusel);
     }
@@ -49,5 +61,14 @@ class WebChatModel {
         }
 
         return array;
+    }
+
+    clearText(text) {
+        var clearText = text
+        clearText = clearText.replaceAll('\n', '<br>')
+        clearText = clearText.replaceAll(' - ', ' **************** ')
+        clearText = clearText.replaceAll('- ', WebChatView.generateBootsrapDot())
+        clearText = clearText.replaceAll(' **************** ', ' - ')
+        return clearText
     }
 }

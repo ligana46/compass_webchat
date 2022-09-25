@@ -5,7 +5,7 @@ class WebChatController {
         this.timer;
         this.xhttp;
         this.SERVER_TIME_OUT = 30000;
-        this.URL = "https://0f44-139-47-73-138.eu.ngrok.io"
+        this.URL = "https://9d4d-139-47-73-138.eu.ngrok.io"
         this.END_POINT = "/webhooks/rest/webhook"
 
         this._initLocalListeners()
@@ -29,10 +29,10 @@ class WebChatController {
         }
     }
 
-    sendMessage() {
-        let text = this.view.getElementById(this.view.ID_INPUTTEXT).value
+    sendMessage(text = null) {
+        text = text == null ? this.view.getElementById(this.view.ID_INPUTTEXT).value : text
         if (text == "") { return }
-        this.jannetTalk()
+        this.jannetTalk(text)
         this.view.writeInChat(this.view.chatResponses.user, text)
         this.view.writeInChat(this.view.chatResponses.boot, this.view.generateLoading())
         this.view.disableInputText()
@@ -44,8 +44,12 @@ class WebChatController {
         controller.bootWriteChat("ERROR: Server is not responding...", true)
     }
 
-    jannetTalk() {
+    jannetTalk(question) {
         $('#rawChat').scrollTop($('#rawChat').height()*10);
+        this.prepareXttp(question);
+    }
+
+    prepareXttp(question) {
         this.xhttp = new XMLHttpRequest();
         this.xhttp.open("POST", this.URL + this.END_POINT, true);
         this.xhttp.setRequestHeader("Content-Type", "application/json");
@@ -54,15 +58,12 @@ class WebChatController {
             controller.model.serverResponse(this)
         };
 
-        let question = this.view.getElementById(this.view.ID_INPUTTEXT).value
         let data = {
             "sender" : this.view.MYID,
             "message" : question
         };
 
-        // console.log(question);
-        // questionsCollection.push(question)
-        // questionsCollectionCursor = questionsCollection.length;
+        console.log(question)
         this.xhttp.send(JSON.stringify(data));
     }
 
@@ -70,6 +71,14 @@ class WebChatController {
         clearTimeout(this.timer);
         this.view.deleteLoagind()
         this.view.enableInputText()
-        this.view.writeInChat(this.view.chatResponses.boot, text.replaceAll('-', '<br>- '))
+        this.view.writeInChat(this.view.chatResponses.boot, text)
+    }
+
+    greetings() {
+        this.sendMessage("Hola")
+        let userMessages = this.view.getElementByClass("chat-right")
+        userMessages[0].remove()
     }
 }
+let controller = new WebChatController(new WebChatView(document), new WebChatModel())
+controller.greetings();
